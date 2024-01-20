@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
     public TMP_InputField roomInputField;
+    public TMP_InputField joinInput;
     public GameObject lobbyPanel;
     public GameObject roomPanel;
-    public TMP_Text roomName;
+    
 
     private void Start()
     {
@@ -22,7 +24,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     {
         if (roomInputField.text.Length >= 1)
         {
-            PhotonNetwork.CreateRoom(roomInputField.text, new RoomOptions() { MaxPlayers = 5 });
+            PhotonNetwork.CreateRoom(roomInputField.text, new RoomOptions() { MaxPlayers = 4 });
         }
     }
 
@@ -30,11 +32,16 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     {
         lobbyPanel.SetActive(false);
         roomPanel.SetActive(true);
-        roomName.text = "Room name: " + PhotonNetwork.CurrentRoom.Name;
+        
     }
 
-    public void JoinRoom(string roomName)
+    public void JoinRoom()
     {
-        PhotonNetwork.JoinRoom(roomName);
+        PhotonNetwork.JoinRoom(joinInput.text);
+    }
+
+    public void StartGameButtonClicked()
+    {
+        SceneManager.LoadScene("Game");
     }
 }

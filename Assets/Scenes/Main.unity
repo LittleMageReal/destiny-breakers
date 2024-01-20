@@ -1094,9 +1094,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomInputField: {fileID: 1689926164}
+  joinInput: {fileID: 954095856}
   lobbyPanel: {fileID: 90012862}
   roomPanel: {fileID: 1609959763}
-  roomName: {fileID: 824933572}
 --- !u!4 &799139634
 Transform:
   m_ObjectHideFlags: 0
@@ -1502,7 +1502,7 @@ MonoBehaviour:
       - m_Target: {fileID: 799139633}
         m_TargetAssemblyTypeName: CreateAndJoinRooms, Assembly-CSharp
         m_MethodName: JoinRoom
-        m_Mode: 5
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
