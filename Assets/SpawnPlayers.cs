@@ -72,7 +72,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
                 // Spawn the second player at spawn point 2
                 Vector3 spawnPosition = spawnPoint3.transform.position;
                 Quaternion spawnRotation = spawnPoint3.transform.rotation;
-                player = PhotonNetwork.Instantiate(playerPrefab3.name, spawnPosition, spawnRotation);
+                player = PhotonNetwork.Instantiate(playerPrefab4.name, spawnPosition, spawnRotation);
 
                 // Set the player transform in the CameraTarget script
                 CameraTarget cameraTarget = player.GetComponent<CameraTarget>();

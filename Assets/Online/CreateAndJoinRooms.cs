@@ -1,27 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
+using UnityEngine.UI;
 using TMPro;
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
-    public TMP_InputField createInput;
-    public TMP_InputField joinInput;
+    public TMP_InputField roomInputField;
+    public GameObject lobbyPanel;
+    public GameObject roomPanel;
+    public TMP_Text roomName;
 
-    public void CreateRoom()
+    private void Start()
     {
-        PhotonNetwork.CreateRoom(createInput.text);
+        PhotonNetwork.JoinLobby();
     }
 
-    public void JoinRoom()
+    public void OnClickCreate()
     {
-        PhotonNetwork.JoinRoom(joinInput.text);
+        if (roomInputField.text.Length >= 1)
+        {
+            PhotonNetwork.CreateRoom(roomInputField.text, new RoomOptions() { MaxPlayers = 5 });
+        }
     }
 
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel("Game");
+        lobbyPanel.SetActive(false);
+        roomPanel.SetActive(true);
+        roomName.text = "Room name: " + PhotonNetwork.CurrentRoom.Name;
+    }
+
+    public void JoinRoom(string roomName)
+    {
+        PhotonNetwork.JoinRoom(roomName);
     }
 }

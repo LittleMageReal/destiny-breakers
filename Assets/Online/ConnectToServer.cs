@@ -18,11 +18,6 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     }
     public override void OnConnectedToMaster()
     {
-        PhotonNetwork.JoinLobby();
-    }
-
-    public override void OnJoinedLobby()
-    {
-        SceneManager.LoadScene("Lobby");
+        SceneManager.LoadScene("Main");
     }
 }
