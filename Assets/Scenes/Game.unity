@@ -9070,14 +9070,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b18843b1c25eb04cadf8bb7199dd63a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 6524669934799906036, guid: 98fce516394c3cb4cb6b42a742b54d51, type: 3}
-  playerPrefab2: {fileID: 6524669934799906036, guid: 98fce516394c3cb4cb6b42a742b54d51, type: 3}
-  playerPrefab3: {fileID: 6524669934799906036, guid: 98fce516394c3cb4cb6b42a742b54d51, type: 3}
-  playerPrefab4: {fileID: 6524669934799906036, guid: 98fce516394c3cb4cb6b42a742b54d51, type: 3}
-  spawnPoint1: {fileID: 308787703}
-  spawnPoint2: {fileID: 518769102}
-  spawnPoint3: {fileID: 1578059696}
-  spawnPoint4: {fileID: 2049012700}
+  playerPrefabs:
+  - {fileID: 6524669934799906036, guid: 98fce516394c3cb4cb6b42a742b54d51, type: 3}
+  - {fileID: 6524669934799906036, guid: 98fce516394c3cb4cb6b42a742b54d51, type: 3}
+  - {fileID: 6524669934799906036, guid: 98fce516394c3cb4cb6b42a742b54d51, type: 3}
+  - {fileID: 6524669934799906036, guid: 98fce516394c3cb4cb6b42a742b54d51, type: 3}
+  spawnPoints:
+  - {fileID: 308787703}
+  - {fileID: 1578059696}
+  - {fileID: 518769102}
+  - {fileID: 2049012700}
   vcam: {fileID: 4509534698809343768}
 --- !u!4 &2096292410
 Transform:

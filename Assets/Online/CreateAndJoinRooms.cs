@@ -13,7 +13,8 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public TMP_InputField joinInput;
     public GameObject lobbyPanel;
     public GameObject roomPanel;
-    
+
+    List<int> playerIDs = new List<int>();
 
     private void Start()
     {
@@ -30,9 +31,16 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        playerIDs.Add(PhotonNetwork.LocalPlayer.ActorNumber);
+        
+        int[] playerIDArray = playerIDs.ToArray();
+        ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable
+        {
+            { "PlayerIDs", playerIDArray }
+        };
+        PhotonNetwork.CurrentRoom.SetCustomProperties(props);
         lobbyPanel.SetActive(false);
         roomPanel.SetActive(true);
-        
     }
 
     public void JoinRoom()
@@ -42,6 +50,9 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public void StartGameButtonClicked()
     {
-        SceneManager.LoadScene("Game");
+        if (PhotonNetwork.IsMasterClient)
+        {
+            SceneManager.LoadScene("Game");
+        }
     }
 }
