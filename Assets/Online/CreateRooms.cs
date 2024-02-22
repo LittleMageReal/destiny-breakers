@@ -21,8 +21,7 @@ public class CreateRooms : MonoBehaviourPunCallbacks
     public List<PlayerItem> playerItemList = new List <PlayerItem>();
     public PlayerItem playerItemPrefab;
     public Transform playerItemParent; 
-
-
+    public GameObject playButton;
     
 
     private void Start()
@@ -34,7 +33,7 @@ public class CreateRooms : MonoBehaviourPunCallbacks
     {
         if (roomInputField.text.Length >= 1)
         {
-            PhotonNetwork.CreateRoom(roomInputField.text, new RoomOptions() { MaxPlayers = 4 });
+            PhotonNetwork.CreateRoom(roomInputField.text, new RoomOptions() {MaxPlayers = 4, BroadcastPropsChangeToAll = true});
         }
     }
 
@@ -105,6 +104,12 @@ public class CreateRooms : MonoBehaviourPunCallbacks
         foreach (KeyValuePair<int, Player> player in PhotonNetwork.CurrentRoom.Players)
         {
             PlayerItem newPlayerItem = Instantiate(playerItemPrefab, playerItemParent);
+            newPlayerItem.SetPlayerInfo(player.Value);
+
+            if(player.Value == PhotonNetwork.LocalPlayer)
+            {
+                newPlayerItem.ApplyLocalChanges();
+            }
             playerItemList.Add(newPlayerItem);
         }
     }
@@ -117,5 +122,22 @@ public class CreateRooms : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player newPlayer)
     {
         UpdatePlayerList();
+    }
+
+    private void Update()
+    {
+        if(PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 1)
+        {
+            playButton.SetActive(true);
+        }
+        else
+        {
+            playButton.SetActive(false);
+        }
+    }
+
+    public void OnClickPlay()
+    {
+        PhotonNetwork.LoadLevel("Game");
     }
 }
