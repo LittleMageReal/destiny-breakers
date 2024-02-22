@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 408.7, y: 657.3}
+  m_SizeDelta: {x: 322.4, y: 399.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1432710739530412908
 CanvasRenderer:
@@ -59,14 +59,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9339623, g: 0.17974365, b: 0.17974365, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: aa78f0e16f41d4f4dada8046b2b9c364, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -737,7 +737,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1911118583658273994}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6514001311288480431}
+        m_TargetAssemblyTypeName: PlayerItem, Assembly-CSharp
+        m_MethodName: OnClickLeftArrow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7818320720771705668
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,7 +871,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7186470014167202449}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6514001311288480431}
+        m_TargetAssemblyTypeName: PlayerItem, Assembly-CSharp
+        m_MethodName: OnClickRightArrow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8880376206795860480
 GameObject:
   m_ObjectHideFlags: 0
@@ -869,7 +893,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8065686975848598173}
+  - component: {fileID: 5036992140421830716}
   - component: {fileID: 6514001311288480431}
+  - component: {fileID: 8339101918095117651}
   m_Layer: 5
   m_Name: PlayerItem
   m_TagString: Untagged
@@ -900,8 +926,38 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -631, y: 39}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 408.7, y: 657.3}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5036992140421830716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8880376206795860480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.9528302, g: 0.0395514, b: 0.0395514, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &6514001311288480431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -914,3 +970,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f33defbbb421544b4430a40b86fc9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerName: {fileID: 6821018034232049703}
+  backgroundImage: {fileID: 5036992140421830716}
+  leftArrowButton: {fileID: 4178200502641579028}
+  rightArrowButton: {fileID: 7818320720771705668}
+  playerAvatar: {fileID: 2561428704967486145}
+  avatars:
+  - {fileID: 21300000, guid: aa78f0e16f41d4f4dada8046b2b9c364, type: 3}
+  - {fileID: 21300000, guid: 523c3761becedec418182199a1a330ad, type: 3}
+  - {fileID: 21300000, guid: 3c3f4d349d35d314ebd4a00325b857c3, type: 3}
+--- !u!222 &8339101918095117651
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8880376206795860480}
+  m_CullTransparentMesh: 1

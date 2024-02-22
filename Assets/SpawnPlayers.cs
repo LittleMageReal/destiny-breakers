@@ -12,22 +12,18 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        if (PhotonNetwork.IsConnectedAndReady)
-        {
-            GameObject player = null;
+        // Get the player's custom properties to determine which prefab to instantiate
+        int playerAvatarIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["playerAvatar"];
+        GameObject playerPrefab = playerPrefabs[playerAvatarIndex];
 
-            int playerIndex = PhotonNetwork.LocalPlayer.ActorNumber;
+        // Choose a random spawn point
+        int randomNumber = Random.Range(0, spawnPoints.Length);
+        Transform spawnPoint = spawnPoints[randomNumber].transform;
 
-            // Check if the player index is within the range of available prefabs
-            if (playerIndex >= 0 && playerIndex < playerPrefabs.Length)
-            {
-                // Spawn the player at the corresponding spawn point
-                Vector3 spawnPosition = spawnPoints[playerIndex].transform.position;
-                Quaternion spawnRotation = spawnPoints[playerIndex].transform.rotation;
-                player = PhotonNetwork.Instantiate(playerPrefabs[playerIndex].name, spawnPosition, spawnRotation);
+        // Instantiate the player prefab at the chosen spawn point
+        GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
 
-                PhotonView photonView = player.AddComponent<PhotonView>();
-                ;
+                
 
                 // Set the player transform in the CameraTarget script
                 CameraTarget cameraTarget = player.GetComponent<CameraTarget>();
@@ -49,7 +45,7 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
                         Debug.LogError("Child object not found");
                     }
                 }
-            }
-        }
+            
+        
     }
 }
