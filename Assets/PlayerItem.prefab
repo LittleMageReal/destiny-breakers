@@ -977,8 +977,8 @@ MonoBehaviour:
   playerAvatar: {fileID: 2561428704967486145}
   avatars:
   - {fileID: 21300000, guid: aa78f0e16f41d4f4dada8046b2b9c364, type: 3}
-  - {fileID: 21300000, guid: 523c3761becedec418182199a1a330ad, type: 3}
   - {fileID: 21300000, guid: 3c3f4d349d35d314ebd4a00325b857c3, type: 3}
+  - {fileID: 21300000, guid: a9c02c4a598f6f9408186de4375e4a9f, type: 3}
 --- !u!222 &8339101918095117651
 CanvasRenderer:
   m_ObjectHideFlags: 0

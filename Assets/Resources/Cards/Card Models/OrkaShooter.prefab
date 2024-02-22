@@ -249,9 +249,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a02c6fd9e92984041ace97eef48c8ac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  players: []
+  player: {fileID: 0}
   firepoint: {fileID: 7972468822183747328}
-  willScript: {fileID: 0}
   projectile: {fileID: 5328139310917450661, guid: 9273601e44720854ebebc2b8366982d7, type: 3}
   range: 50
   fireInterval: 4
