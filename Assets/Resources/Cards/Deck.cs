@@ -12,6 +12,8 @@ public class Deck : MonoBehaviour
     public GameObject cardUIPrefab; // The Card UI Prefab
     public Transform cardUIParent; // The parent transform for the Card UI Prefabs
 
+    public bool FreezeDeck = false;
+
     private new PhotonView photonView;
 
     void Start()
@@ -44,12 +46,12 @@ public class Deck : MonoBehaviour
        for (int i = 0; i < numberOfCards; i++)
         {
             // Check if the hand is already full
-            if (hand.Count >= 3) //hand limit 
+            if (hand.Count >= 3 && FreezeDeck == false) //hand limit 
             {
                 break; 
             }
 
-            if (deck.Count > 0)
+            if (deck.Count > 0 && FreezeDeck == false)
             {
                 Card drawnCard = deck[0];
                 deck.RemoveAt(0);
