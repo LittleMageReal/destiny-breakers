@@ -6,11 +6,11 @@ using Photon.Pun;
 
 public class Spawn : MonoBehaviour
 {
-    public Deck deck; // референс на выбранную деку/набой карт
+    public Deck deck; 
     public Transform parentObject;
     public Transform artifact;
     public Transform effect;
-    private int selectedCardIndex = 0; // номер выбанной карты
+    private int selectedCardIndex = 0; 
 
     private float scrollCooldown = 0.2f; // Time in seconds to wait after each scroll
     private float lastScrollTime; // Time when the last scroll occurred
@@ -91,7 +91,7 @@ public class Spawn : MonoBehaviour
 
             if (Input.GetButtonDown("Fire2"))
             {
-                if (deck.hand.Count > 0) // проверка на наличие карт в руке
+                if (deck.hand.Count > 0) // 
                 {
                     Card selectedCard = deck.hand[selectedCardIndex];
 
@@ -99,7 +99,7 @@ public class Spawn : MonoBehaviour
                 }
             }
         }
-        // номер карты в руке. 0 идет самая первая карта.
+        
 
     }
     public void SpawnPrefab(Card card)
@@ -127,17 +127,34 @@ public class Spawn : MonoBehaviour
 
             if (!card.Move)
             {
-                // Remove the card from the hand
-                deck.hand.Remove(card);
+                if (card.Token)
 
-                // Add the card back to the deck
-                deck.deck.Add(card);
+                   {
+                     // If the card is a token card, remove it from the hand without adding it back to the deck
+                     deck.hand.Remove(card);
 
-                // Destroy the UI card object
-                Destroy(cardUIs[selectedCardIndex]);
+                     // Destroy the UI card object
+                     Destroy(cardUIs[selectedCardIndex]);
 
-                // Remove the UI card from the list
-                cardUIs.RemoveAt(selectedCardIndex);
+                     // Remove the UI card from the list
+                     cardUIs.RemoveAt(selectedCardIndex);
+                    }
+                else
+                {
+                 // Remove the card from the hand
+                 deck.hand.Remove(card);
+
+                 // Add the card back to the deck
+                 deck.deck.Add(card);
+
+                 // Destroy the UI card object
+                 Destroy(cardUIs[selectedCardIndex]);
+
+                 // Remove the UI card from the list
+                 cardUIs.RemoveAt(selectedCardIndex);
+
+                }
+                
             }
             
         }

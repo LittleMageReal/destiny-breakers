@@ -12,6 +12,7 @@ public class Card : ScriptableObject
     public enum spawnPosition { Follow, Stand, Artifact, Effect}
     public spawnPosition spawnType;
     public bool Move;
+    public bool Token;
 
     public string cardEffect;
 }

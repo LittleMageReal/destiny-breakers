@@ -938,6 +938,7 @@ MonoBehaviour:
   willScript: {fileID: 9013868271880598918}
   bulletForce: 20
   spreadAngle: 10
+  Cooldown: 2
 --- !u!114 &9013868271880598918
 MonoBehaviour:
   m_ObjectHideFlags: 0

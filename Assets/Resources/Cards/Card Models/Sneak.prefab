@@ -1227,6 +1227,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 2654042887191037441}
   willScript: {fileID: 1523693066853657828}
   attackRange: 1
+  Cooldown: 2
 --- !u!114 &1523693066853657828
 MonoBehaviour:
   m_ObjectHideFlags: 0
