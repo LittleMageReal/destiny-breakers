@@ -15,6 +15,9 @@ public class Spawn : MonoBehaviour
     private float scrollCooldown = 0.2f; // Time in seconds to wait after each scroll
     private float lastScrollTime; // Time when the last scroll occurred
 
+    private float rightMouseHoldStartTime =  0f; // Time when the right mouse button was first pressed
+    private bool isRightMouseHeld = false; // Whether the right mouse button is currently being held down
+
     public List<GameObject> cardUIs = new List<GameObject>(); // List of Card UI objects
     public TMP_Text cardEffect;
 
@@ -91,12 +94,27 @@ public class Spawn : MonoBehaviour
 
             if (Input.GetButtonDown("Fire2"))
             {
-                if (deck.hand.Count > 0) // 
+                if (deck.hand.Count > 0 && Time.time - rightMouseHoldStartTime < 3f) // 
                 {
                     Card selectedCard = deck.hand[selectedCardIndex];
 
                     SpawnPrefab(deck.hand[selectedCardIndex]);
                 }
+            }
+
+            if (Input.GetMouseButtonDown(1)) //  1 is the right mouse button
+            {
+              rightMouseHoldStartTime = Time.time;
+              isRightMouseHeld = true;
+            }
+             else if (Input.GetMouseButtonUp(1)) //  1 is the right mouse button
+            {
+              if (isRightMouseHeld && Time.time - rightMouseHoldStartTime >=  3f)
+               {
+                  // Right mouse button was held for at least  3 seconds
+                  ReturnCardAndDrawNew();
+               }
+              isRightMouseHeld = false;
             }
         }
         
@@ -238,6 +256,37 @@ public class Spawn : MonoBehaviour
             instantiatedObject.GetComponent<PhotonView>().TransferOwnership(parentObject.GetComponent<PhotonView>().Owner);
         }
 
+    }
+
+    private void ReturnCardAndDrawNew()
+    {
+      if (deck.hand.Count >  0)
+     {
+        // Check if the selected card can be returned
+        Card selectedCard = deck.hand[selectedCardIndex];
+        if (selectedCard.canBeReturned)
+        {
+            // Return the selected card to the deck
+            deck.deck.Add(selectedCard);
+            deck.hand.RemoveAt(selectedCardIndex);
+
+            // Destroy the UI card object for the returned card
+            Destroy(cardUIs[selectedCardIndex]);
+
+            // Remove the UI card from the list for the returned card
+            cardUIs.RemoveAt(selectedCardIndex);
+
+            // Update selectedCardIndex to the new card index
+            selectedCardIndex = deck.hand.Count -  1;
+
+            // Draw a new card
+            deck.DrawCard(1); // Draw one card
+        }
+        else
+        {
+            Debug.Log("This card cannot be returned.");
+        }
+      }
     }
 
 }

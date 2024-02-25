@@ -253,6 +253,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 7642431196503928144, guid: 920336e0194d8c544a5c02d5d301e51c, type: 3}
   willScript: {fileID: 585563023556710715}
   bulletForce: 100
+  Cooldown: 2
 --- !u!114 &585563023556710714
 MonoBehaviour:
   m_ObjectHideFlags: 0

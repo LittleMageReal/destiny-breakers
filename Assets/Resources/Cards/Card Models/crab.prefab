@@ -137,8 +137,8 @@ MonoBehaviour:
   playerHealth: {fileID: 0}
   Crush: 0
   CrushAmount: 0
-  Petrify: 0
-  PetrifyAmount: 0
+  Petrify: 1
+  PetrifyAmount: 1
 --- !u!114 &6222216814527657002
 MonoBehaviour:
   m_ObjectHideFlags: 0

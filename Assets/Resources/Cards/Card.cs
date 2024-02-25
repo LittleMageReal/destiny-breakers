@@ -13,6 +13,7 @@ public class Card : ScriptableObject
     public spawnPosition spawnType;
     public bool Move;
     public bool Token;
+    public bool canBeReturned = false;
 
     public string cardEffect;
 }
