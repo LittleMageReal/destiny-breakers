@@ -38655,6 +38655,8 @@ MonoBehaviour:
   Punish: 0
   DestroctionTime: 0.1
   Destroeble: 1
+  isDestroyed: 0
+  bulletPhotonView: {fileID: 0}
   photonView: {fileID: 0}
 --- !u!114 &2304576291360541471
 MonoBehaviour:

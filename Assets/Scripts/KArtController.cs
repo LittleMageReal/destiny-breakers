@@ -15,12 +15,10 @@ public class KArtController : MonoBehaviour
     [SerializeField] private GameObject particleSystem2;
     [SerializeField] private GameObject particleSystem3;
 
-
     private float _forwardAmount;
     public float _currentSpeed;
     private float _turnAmount;
     private bool _isGrounded;
-
 
     private bool _isDrifting;
     private float _driftDirection;
@@ -31,11 +29,7 @@ public class KArtController : MonoBehaviour
     private float _redDriftCounter = 0f;
     [SerializeField] private float ScarletBurst = 0f;
 
-
     PhotonView View;
-
-
-
 
     private void Start()
     {
@@ -47,13 +41,10 @@ public class KArtController : MonoBehaviour
     {
         if (View.IsMine)
         {
-
             transform.position = sphereRb.transform.position;
 
             _forwardAmount = Input.GetAxis("Vertical");
             _turnAmount = Input.GetAxis("Horizontal");
-
-
 
             if (_forwardAmount != 0)
                 Drive();
@@ -61,17 +52,12 @@ public class KArtController : MonoBehaviour
                 Stand();
 
             TurnHandler();
-            // GroundCheckAndNormalHandler();
-
 
             if (Input.GetButtonDown("Jump") && !_isDrifting && _turnAmount != 0)
                 StartDrift();
 
-            if (_isDrifting && (Input.GetButtonUp("Jump") || (Input.GetKeyUp(KeyCode.W)) || _turnAmount == 0)) //|| _turnAmount == 0)
+            if (_isDrifting && (Input.GetButtonUp("Jump") || (Input.GetKeyUp(KeyCode.W)) || _turnAmount == 0))
                 EndDrift();
-
-
-
 
             if (_boostTime > 0)
             {
@@ -81,17 +67,9 @@ public class KArtController : MonoBehaviour
                     _currentSpeed = forwardSpeed;
                 }
             }
-
         }
-
     }
 
-    //private void GroundCheckAndNormalHandler()
-    // {
-    // RaycastHit hit;
-    // _isGrounded = Physics.Raycast(transform.position, -transform.up, out hit, 1, groundLayerMask);
-    // transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation, 0.1f);
-    // }
     private void TurnHandler()
     {
         float newRotation = _turnAmount * turnSpeed * Time.deltaTime;
@@ -104,10 +82,9 @@ public class KArtController : MonoBehaviour
     {
         sphereRb.AddForce(transform.forward * _currentSpeed, ForceMode.Acceleration);
 
-
         if (_isDrifting)
         {
-            float driftTurnSpeed = turnSpeed * 2; // Increase turn speed while drifting.
+            float driftTurnSpeed = turnSpeed * 2;
             float newRotation = _driftDirection * driftTurnSpeed * Time.deltaTime;
             transform.Rotate(0, newRotation, 0, Space.World);
 
@@ -116,42 +93,22 @@ public class KArtController : MonoBehaviour
 
             _driftTime += Time.deltaTime;
 
+            UpdateParticleSystems();
 
             if (_driftTime > 2.7f)
             {
-                particleSystem1.SetActive(false);
-                particleSystem2.SetActive(false);
-                particleSystem3.SetActive(true);
-            }
-            else if (_driftTime > 1.7f)
-            {
-                particleSystem1.SetActive(false);
-                particleSystem2.SetActive(true);
-                particleSystem3.SetActive(false);
-            }
-            else if (_driftTime > 0.3f)
-            {
-                particleSystem1.SetActive(true);
-                particleSystem2.SetActive(false);
-                particleSystem3.SetActive(false);
-            }
-
-
-            if (_driftTime > 2.7f) // If in red drift
-            {
-                _redDriftCounter += Time.deltaTime; // Increment counter by the time passed since the last frame
-                if (_redDriftCounter >= 1f) // If a second has passed
+                _redDriftCounter += Time.deltaTime;
+                if (_redDriftCounter >= 1f)
                 {
-                    DriftPointManager.Instance.AddPoints(Card.PointType.Red); // Add a red point
+                    DriftPointManager.Instance.AddPoints(Card.PointType.Red);
                     ScarletBurst += 1;
-                    _redDriftCounter = 0f; // Reset the counter
+                    _redDriftCounter = 0f;
                 }
             }
 
-
             if (_isDrifting && Input.GetKey(KeyCode.Space) && _turnAmount != _driftDirection)
             {
-                float counterForceMagnitude = _currentSpeed * 0.3f; // Adjust this value as needed
+                float counterForceMagnitude = _currentSpeed * 0.3f;
                 Vector3 counterForce = transform.right * -_driftDirection * counterForceMagnitude;
                 sphereRb.AddForce(counterForce, ForceMode.Acceleration);
             }
@@ -182,30 +139,87 @@ public class KArtController : MonoBehaviour
     {
         _isDrifting = false;
 
-        if (_driftTime > 2.7f) // Drifted for more than 5 seconds
+        if (_driftTime > 2.7f)
         {
             _boostTime = 2;
-            _currentSpeed += ScarletBurst * 10f; // Large speed boost
+            _currentSpeed += ScarletBurst * 10f;
             ScarletBurst = 0;
             DriftPointManager.Instance.AddPoints(Card.PointType.Red);
         }
-        else if (_driftTime > 1.7f) // Drifted for more than 2 seconds
+        else if (_driftTime > 1.7f)
         {
             _boostTime = 5;
-            _currentSpeed += 10.0f; // Medium speed boost
+            _currentSpeed += 10.0f;
             DriftPointManager.Instance.AddPoints(Card.PointType.Blue);
         }
         else if (_driftTime > 0.3f)
         {
             _boostTime = 1;
-            _currentSpeed += 1.0f; // Small speed boost
+            _currentSpeed += 1.0f;
             DriftPointManager.Instance.AddPoints(Card.PointType.Green);
         }
 
         _driftTime = 0;
 
+        // Send custom event to synchronize particle system changes
+        if (View.IsMine)
+        {
+            View.RPC("DeactivateParticleSystems", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    private void DeactivateParticleSystems()
+    {
         particleSystem1.SetActive(false);
         particleSystem2.SetActive(false);
         particleSystem3.SetActive(false);
+    }
+
+    private void UpdateParticleSystems()
+    {
+        if (_driftTime > 2.7f)
+        {
+            ActivateParticleSystem(particleSystem3);
+        }
+        else if (_driftTime > 1.7f)
+        {
+            ActivateParticleSystem(particleSystem2);
+        }
+        else if (_driftTime > 0.3f)
+        {
+            ActivateParticleSystem(particleSystem1);
+        }
+    }
+
+    private void ActivateParticleSystem(GameObject activeParticleSystem)
+    {
+        
+        activeParticleSystem.SetActive(true);
+
+        // Call RPC to update particle systems on all clients
+        if (View.IsMine)
+        {
+            View.RPC("UpdateParticleSystemsRPC", RpcTarget.All, activeParticleSystem.name);
+        }
+    }
+
+    [PunRPC]
+    private void UpdateParticleSystemsRPC(string activeParticleSystemName)
+    {
+        if (activeParticleSystemName == particleSystem1.name)
+        {
+            particleSystem1.SetActive(true);
+        }
+        else if (activeParticleSystemName == particleSystem2.name)
+        {
+            particleSystem1.SetActive(false);
+            particleSystem2.SetActive(true);
+        }
+        else if (activeParticleSystemName == particleSystem3.name)
+        {
+            particleSystem2.SetActive(false);
+            particleSystem3.SetActive(true);
+        }
     }
 }

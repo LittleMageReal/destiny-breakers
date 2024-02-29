@@ -11,20 +11,18 @@ public class BakcAndForce : MonoBehaviour
     private Vector3 originalPosition; // Store the original position of the sphere
     private bool isMoving = false; // Indicates whether the sphere is currently moving away from the unit
 
-    void Start()
-    {
-        // Remember the original position of the sphere at the start
-        originalPosition = transform.position;
-    }
+    
 
     void Update()
     {
+        originalPosition = transform.parent.position;
+
         if (Input.GetKey(KeyCode.Mouse0))
         {
             // Store the original position of the sphere when Fire1 is first pressed
             if (!isMoving)
             {
-                originalPosition = transform.position;
+                //originalPosition = transform.parent.position;
                 isMoving = true;
             }
 
