@@ -53,10 +53,10 @@ public class KArtController : MonoBehaviour
 
             TurnHandler();
 
-            if (Input.GetButtonDown("Jump") && !_isDrifting && _turnAmount != 0)
+            if (Input.GetButtonDown("Jump") && !_isDrifting && Mathf.Abs(_turnAmount) >= 0.5)
                 StartDrift();
 
-            if (_isDrifting && (Input.GetButtonUp("Jump") || (Input.GetKeyUp(KeyCode.W)) || _turnAmount == 0))
+            if (_isDrifting && (Input.GetButtonUp("Jump") || (Input.GetKeyUp(KeyCode.W)) ))
                 EndDrift();
 
             if (_boostTime > 0)
@@ -84,34 +84,36 @@ public class KArtController : MonoBehaviour
 
         if (_isDrifting)
         {
-            float driftTurnSpeed = turnSpeed * 2;
-            float newRotation = _driftDirection * driftTurnSpeed * Time.deltaTime;
-            transform.Rotate(0, newRotation, 0, Space.World);
+            // Increase turn speed during drift
+        float driftTurnSpeed = turnSpeed * 1.5f; // Increase turnSpeed by a factor of 2 during drift
+        float newRotation = _driftDirection * driftTurnSpeed * Time.deltaTime;
+        transform.Rotate(0, newRotation, 0, Space.World);
 
-            Vector3 driftForce = -transform.right * _driftDirection * _currentSpeed / 2;
-            sphereRb.AddForce(driftForce, ForceMode.Acceleration);
+        // Apply a stronger force to the vehicle in the direction of the drift
+        Vector3 driftForce = -transform.right * _driftDirection * _currentSpeed /4;
+        sphereRb.AddForce(driftForce, ForceMode.Acceleration);
 
-            _driftTime += Time.deltaTime;
+        _driftTime += Time.deltaTime;
 
-            UpdateParticleSystems();
+        UpdateParticleSystems();
 
-            if (_driftTime > 2.7f)
+        if (_driftTime > 2.7f)
+        {
+            _redDriftCounter += Time.deltaTime;
+            if (_redDriftCounter >= 1f)
             {
-                _redDriftCounter += Time.deltaTime;
-                if (_redDriftCounter >= 1f)
-                {
-                    DriftPointManager.Instance.AddPoints(Card.PointType.Red);
-                    ScarletBurst += 1;
-                    _redDriftCounter = 0f;
-                }
+                DriftPointManager.Instance.AddPoints(Card.PointType.Red);
+                ScarletBurst += 1;
+                _redDriftCounter = 0f;
             }
+        }
 
-            if (_isDrifting && Input.GetKey(KeyCode.Space) && _turnAmount != _driftDirection)
-            {
-                float counterForceMagnitude = _currentSpeed * 0.3f;
-                Vector3 counterForce = transform.right * -_driftDirection * counterForceMagnitude;
-                sphereRb.AddForce(counterForce, ForceMode.Acceleration);
-            }
+        if (_isDrifting && Input.GetKey(KeyCode.Space) && _turnAmount != _driftDirection)
+        {
+            float counterForceMagnitude = _currentSpeed * 0.3f;
+            Vector3 counterForce = transform.right * -_driftDirection * counterForceMagnitude;
+            sphereRb.AddForce(counterForce, ForceMode.Acceleration);
+        }
         }
     }
 
