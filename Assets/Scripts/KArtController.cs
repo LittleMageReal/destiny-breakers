@@ -85,12 +85,12 @@ public class KArtController : MonoBehaviour
         if (_isDrifting)
         {
             // Increase turn speed during drift
-        float driftTurnSpeed = turnSpeed * 1.5f; // Increase turnSpeed by a factor of 2 during drift
+        float driftTurnSpeed = turnSpeed * 2; // Increase turnSpeed by a factor of 2 during drift
         float newRotation = _driftDirection * driftTurnSpeed * Time.deltaTime;
         transform.Rotate(0, newRotation, 0, Space.World);
 
         // Apply a stronger force to the vehicle in the direction of the drift
-        Vector3 driftForce = -transform.right * _driftDirection * _currentSpeed /4;
+        Vector3 driftForce = -transform.right * _driftDirection * _currentSpeed /2;
         sphereRb.AddForce(driftForce, ForceMode.Acceleration);
 
         _driftTime += Time.deltaTime;
