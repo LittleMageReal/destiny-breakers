@@ -15,8 +15,10 @@ MonoBehaviour:
   cardName: 
   cardImage: {fileID: 0}
   cardCost: 7
-  unitPrefab: {fileID: 6823915902697852249, guid: 537473cad80143e4ebdea75b40eac5b2, type: 3}
+  unitPrefab: {fileID: 6823915902697852249, guid: 51e0bbb0a0ea97044a01c7b7458d0e31, type: 3}
   pointType: 0
   spawnType: 0
   Move: 0
+  Token: 0
+  canBeReturned: 0
   cardEffect: Shoot
