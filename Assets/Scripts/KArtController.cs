@@ -31,6 +31,10 @@ public class KArtController : MonoBehaviour
 
     private float _redDriftCounter = 0f;
     private bool isSpeedBoostActive = false;
+    
+    private float speedBoostCooldown = 0f; 
+    private float speedBoostCooldownDuration = 0f; 
+
     private Card.PointType lastPointTypeObtained = Card.PointType.Green;
 
     PhotonView View;
@@ -68,14 +72,20 @@ public class KArtController : MonoBehaviour
             {
               ActivateSpeedBoost();
             }
+
+            if (speedBoostCooldown > 0)
+            {
+              speedBoostCooldown -= Time.deltaTime;
+            }
         }
     }
 
     private void ActivateSpeedBoost()
 {
-    if (!isSpeedBoostActive) // Ensure a speed boost is not already active
+    if (!isSpeedBoostActive && speedBoostCooldown <= 0) // Ensure a speed boost is not already active
         {
             isSpeedBoostActive = true; // Set the flag to indicate a speed boost is active
+            speedBoostCooldown = speedBoostCooldownDuration; // Reset the cooldown
             StartCoroutine(SpeedBoostCoroutine(lastPointTypeObtained));
         }
 }
@@ -150,6 +160,7 @@ public class KArtController : MonoBehaviour
     }
 
     isSpeedBoostActive = false; // Reset the flag when the Shift key is released
+    speedBoostCooldown = speedBoostCooldownDuration; // Reset the cooldown
 }
 
     private void TurnHandler()
@@ -179,7 +190,7 @@ public class KArtController : MonoBehaviour
 
         UpdateParticleSystems();
 
-        if (_driftTime > 2.7f)
+        if (!isSpeedBoostActive && _driftTime > 2.7f)
         {
             _redDriftCounter += Time.deltaTime;
             if (_redDriftCounter >= 1f)
@@ -222,18 +233,18 @@ public class KArtController : MonoBehaviour
     {
         _isDrifting = false;
 
-        if (_driftTime > 2.7f)
+        if (!isSpeedBoostActive && _driftTime > 2.7f)
         {
             DriftPointManager.Instance.AddPoints(Card.PointType.Red);
             lastPointTypeObtained = Card.PointType.Red;
         }
-        else if (_driftTime > 1.7f)
+        else if (!isSpeedBoostActive && _driftTime > 1.7f)
         {
             DriftPointManager.Instance.AddPoints(Card.PointType.Blue);
             DriftPointManager.Instance.AddPoints(Card.PointType.Blue);
             lastPointTypeObtained = Card.PointType.Blue;
         }
-        else if (_driftTime > 0.3f)
+        else if (!isSpeedBoostActive && _driftTime > 0.3f)
         {
             DriftPointManager.Instance.AddPoints(Card.PointType.Green);
             lastPointTypeObtained = Card.PointType.Green;
