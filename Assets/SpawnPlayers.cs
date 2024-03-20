@@ -10,42 +10,53 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
     public GameObject[] spawnPoints;
     public CinemachineVirtualCamera vcam; // The Cinemachine Virtual Camera
 
+    // List to track used spawn points
+    private List<int> usedSpawnPoints = new List<int>();
+
     private void Start()
     {
         // Get the player's custom properties to determine which prefab to instantiate
         int playerAvatarIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["playerAvatar"];
         GameObject playerPrefab = playerPrefabs[playerAvatarIndex];
 
-        // Choose a random spawn point
-        int randomNumber = Random.Range(0, spawnPoints.Length);
-        Transform spawnPoint = spawnPoints[randomNumber].transform;
+        // Choose a unique spawn point
+        Transform spawnPoint = GetUniqueSpawnPoint();
 
         // Instantiate the player prefab at the chosen spawn point
         GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
 
-                
+        // Set the player transform in the CameraTarget script
+        CameraTarget cameraTarget = player.GetComponent<CameraTarget>();
+        if (cameraTarget != null)
+        {
+            cameraTarget.player = player.transform;
+        }
 
-                // Set the player transform in the CameraTarget script
-                CameraTarget cameraTarget = player.GetComponent<CameraTarget>();
-                if (cameraTarget != null)
-                {
-                    cameraTarget.player = player.transform;
-                }
+        // Set the Cinemachine Virtual Camera to follow the player
+        if (player != null)
+        {
+            Transform childObject = player.transform;
+            if (childObject != null)
+            {
+                vcam.LookAt = childObject;
+            }
+            else
+            {
+                Debug.LogError("Child object not found");
+            }
+        }
+    }
 
-                // Set the Cinemachine Virtual Camera to follow the player
-                if (player != null)
-                {
-                    Transform childObject = player.transform;
-                    if (childObject != null)
-                    {
-                        vcam.LookAt = childObject;
-                    }
-                    else
-                    {
-                        Debug.LogError("Child object not found");
-                    }
-                }
-            
-        
+    // Method to get a unique spawn point
+    private Transform GetUniqueSpawnPoint()
+    {
+        int randomNumber;
+        do
+        {
+            randomNumber = Random.Range(0, spawnPoints.Length);
+        } while (usedSpawnPoints.Contains(randomNumber));
+
+        usedSpawnPoints.Add(randomNumber);
+        return spawnPoints[randomNumber].transform;
     }
 }

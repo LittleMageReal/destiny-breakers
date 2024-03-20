@@ -15,6 +15,11 @@ public class KArtController : MonoBehaviour
     [SerializeField] private GameObject particleSystem2;
     [SerializeField] private GameObject particleSystem3;
 
+    [SerializeField] private GameObject greenParticleSystem;
+    [SerializeField] private GameObject blueParticleSystem;
+    [SerializeField] private GameObject redParticleSystem;
+    
+
     private float _forwardAmount;
     public float _currentSpeed;
     private float _turnAmount;
@@ -24,10 +29,9 @@ public class KArtController : MonoBehaviour
     private float _driftDirection;
     private float _driftTime;
 
-    private float _boostTime;
-
     private float _redDriftCounter = 0f;
-    [SerializeField] private float ScarletBurst = 0f;
+    private bool isSpeedBoostActive = false;
+    private Card.PointType lastPointTypeObtained = Card.PointType.Green;
 
     PhotonView View;
 
@@ -59,16 +63,94 @@ public class KArtController : MonoBehaviour
             if (_isDrifting && (Input.GetButtonUp("Jump") || (Input.GetKeyUp(KeyCode.W)) ))
                 EndDrift();
 
-            if (_boostTime > 0)
+         
+            if (Input.GetKeyDown(KeyCode.LeftShift) && !isSpeedBoostActive)
             {
-                _boostTime -= Time.deltaTime;
-                if (_boostTime <= 0)
-                {
-                    _currentSpeed = forwardSpeed;
-                }
+              ActivateSpeedBoost();
             }
         }
     }
+
+    private void ActivateSpeedBoost()
+{
+    if (!isSpeedBoostActive) // Ensure a speed boost is not already active
+        {
+            isSpeedBoostActive = true; // Set the flag to indicate a speed boost is active
+            StartCoroutine(SpeedBoostCoroutine(lastPointTypeObtained));
+        }
+}
+
+
+ private IEnumerator SpeedBoostCoroutine(Card.PointType pointTypeToSpend)
+{
+    // Determine which particle system to activate based on the point type
+    GameObject particleSystemToActivate = null;
+    switch (pointTypeToSpend)
+    {
+        case Card.PointType.Green:
+            particleSystemToActivate = greenParticleSystem;
+            break;
+        case Card.PointType.Blue:
+            particleSystemToActivate = blueParticleSystem;
+            break;
+        case Card.PointType.Red:
+            particleSystemToActivate = redParticleSystem;
+            break;
+    }
+
+    // Activate the particle system locally
+    if (particleSystemToActivate != null)
+    {
+        particleSystemToActivate.SetActive(true);
+    }
+
+    // Use RPC to activate the particle system on all clients
+    if (View.IsMine)
+    {
+        View.RPC("ActivateParticleSystemRPC", RpcTarget.All, particleSystemToActivate.name);
+    }
+
+    while (Input.GetKey(KeyCode.LeftShift))
+    {
+        // Check if there are enough points to spend
+        if (DriftPointManager.Instance.SpendPoints(pointTypeToSpend, 1))
+        {
+            // Apply a temporary speed boost
+            float originalSpeed = _currentSpeed;
+            _currentSpeed *= 1.5f;
+            yield return new WaitForSeconds(1); // Wait for 1 second before applying the boost again
+            _currentSpeed = originalSpeed;
+        }
+        else
+        {
+            // Not enough points, deactivate the particle system and stop the coroutine
+            if (particleSystemToActivate != null)
+            {
+                particleSystemToActivate.SetActive(false);
+            }
+            if (View.IsMine)
+            {
+                View.RPC("DeactivateParticleSystemRPC", RpcTarget.All, particleSystemToActivate.name);
+            }
+            isSpeedBoostActive = false; // Reset the flag
+            yield break;
+        }
+    }
+
+    // Deactivate the particle system locally
+    if (particleSystemToActivate != null)
+    {
+        particleSystemToActivate.SetActive(false);
+    }
+
+    // Use RPC to deactivate the particle system on all clients
+    if (View.IsMine)
+    {
+        View.RPC("DeactivateParticleSystemRPC", RpcTarget.All, particleSystemToActivate.name);
+    }
+
+    isSpeedBoostActive = false; // Reset the flag when the Shift key is released
+}
 
     private void TurnHandler()
     {
@@ -103,7 +185,6 @@ public class KArtController : MonoBehaviour
             if (_redDriftCounter >= 1f)
             {
                 DriftPointManager.Instance.AddPoints(Card.PointType.Red);
-                ScarletBurst += 1;
                 _redDriftCounter = 0f;
             }
         }
@@ -143,22 +224,19 @@ public class KArtController : MonoBehaviour
 
         if (_driftTime > 2.7f)
         {
-            _boostTime = 2;
-            _currentSpeed += ScarletBurst * 10f;
-            ScarletBurst = 0;
             DriftPointManager.Instance.AddPoints(Card.PointType.Red);
+            lastPointTypeObtained = Card.PointType.Red;
         }
         else if (_driftTime > 1.7f)
         {
-            _boostTime = 5;
-            _currentSpeed += 10.0f;
             DriftPointManager.Instance.AddPoints(Card.PointType.Blue);
+            DriftPointManager.Instance.AddPoints(Card.PointType.Blue);
+            lastPointTypeObtained = Card.PointType.Blue;
         }
         else if (_driftTime > 0.3f)
         {
-            _boostTime = 1;
-            _currentSpeed += 1.0f;
             DriftPointManager.Instance.AddPoints(Card.PointType.Green);
+            lastPointTypeObtained = Card.PointType.Green;
         }
 
         _driftTime = 0;
@@ -224,4 +302,51 @@ public class KArtController : MonoBehaviour
             particleSystem3.SetActive(true);
         }
     }
+
+
+[PunRPC]
+private void ActivateParticleSystemRPC(string particleSystemName)
+{
+    GameObject particleSystemToActivate = null;
+    if (particleSystemName == greenParticleSystem.name)
+    {
+        particleSystemToActivate = greenParticleSystem;
+    }
+    else if (particleSystemName == blueParticleSystem.name)
+    {
+        particleSystemToActivate = blueParticleSystem;
+    }
+    else if (particleSystemName == redParticleSystem.name)
+    {
+        particleSystemToActivate = redParticleSystem;
+    }
+
+    if (particleSystemToActivate != null)
+    {
+        particleSystemToActivate.SetActive(true);
+    }
+}
+
+[PunRPC]
+private void DeactivateParticleSystemRPC(string particleSystemName)
+{
+    GameObject particleSystemToActivate = null;
+    if (particleSystemName == greenParticleSystem.name)
+    {
+        particleSystemToActivate = greenParticleSystem;
+    }
+    else if (particleSystemName == blueParticleSystem.name)
+    {
+        particleSystemToActivate = blueParticleSystem;
+    }
+    else if (particleSystemName == redParticleSystem.name)
+    {
+        particleSystemToActivate = redParticleSystem;
+    }
+
+    if (particleSystemToActivate != null)
+    {
+        particleSystemToActivate.SetActive(false);
+    }
+}
 }
