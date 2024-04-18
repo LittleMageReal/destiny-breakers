@@ -6,7 +6,7 @@ using Photon.Pun;
 
 public class Deck : MonoBehaviour
 {
-    public List<Card> deck = new List<Card>();
+    public List<Card> deck;
     public List<Card> hand = new List<Card>();
 
     public GameObject cardUIPrefab; // The Card UI Prefab
