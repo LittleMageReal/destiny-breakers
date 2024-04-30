@@ -81,11 +81,11 @@ public class Spawn : MonoBehaviour
                 {
                     if (i == selectedCardIndex)
                     {
-                        cardUIs[i].transform.localScale = new Vector3(0.5f, 1.1f, 0f); // Scale up
+                        cardUIs[i].transform.localScale = new Vector3(1.5f, 1.5f, 0f); // Scale up
                     }
                     else
                     {
-                        cardUIs[i].transform.localScale = new Vector3(0.4f, 0.9f, 0f); // Reset scale
+                        cardUIs[i].transform.localScale = new Vector3(0.7f, 0.7f, 0f); // Reset scale
                     }
                 }
             }
