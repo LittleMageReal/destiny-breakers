@@ -23,6 +23,7 @@ public class Spawn : MonoBehaviour
 
     public static Spawn instance;
 
+
     private new PhotonView photonView;
 
     void Awake()
@@ -92,30 +93,32 @@ public class Spawn : MonoBehaviour
 
 
 
-            if (Input.GetButtonDown("Fire2"))
-            {
-                if (deck.hand.Count > 0 && Time.time - rightMouseHoldStartTime < 3f) // 
+           if (Input.GetButtonDown("Fire2")) // Assuming "Fire2" is the right mouse button
+        {
+                    // Right mouse button was just pressed, start the hold timer
+                    rightMouseHoldStartTime = Time.time;
+                    isRightMouseHeld = true;
+                
+                if (Time.time - rightMouseHoldStartTime >= 3f)
                 {
-                    Card selectedCard = deck.hand[selectedCardIndex];
-
-                    SpawnPrefab(deck.hand[selectedCardIndex]);
+                    // Right mouse button was held for at least 3 seconds
+                    ReturnCardAndDrawNew();
+                    isRightMouseHeld = false; // Reset the flag
                 }
-            }
+                else
+                {
+                    // Right mouse button was pressed, play the card immediately
+                    Card selectedCard = deck.hand[selectedCardIndex];
+                    SpawnPrefab(selectedCard);
+                }
+            
+        }
+        else if (Input.GetButtonUp("Fire2"))
+        {
+            // Right mouse button was released, reset the hold timer
+            isRightMouseHeld = false;
+        }
 
-            if (Input.GetMouseButtonDown(1)) //  1 is the right mouse button
-            {
-              rightMouseHoldStartTime = Time.time;
-              isRightMouseHeld = true;
-            }
-             else if (Input.GetMouseButtonUp(1)) //  1 is the right mouse button
-            {
-              if (isRightMouseHeld && Time.time - rightMouseHoldStartTime >=  3f)
-               {
-                  // Right mouse button was held for at least  3 seconds
-                  ReturnCardAndDrawNew();
-               }
-              isRightMouseHeld = false;
-            }
         }
         
 
