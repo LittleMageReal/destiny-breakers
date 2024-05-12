@@ -92,44 +92,42 @@ public class Spawn : MonoBehaviour
             }
 
 
+// Card summoning and returning cards to deck
+         if (Input.GetButtonDown("Fire2")) 
+            {
+                isRightMouseHeld = true;
 
-           if (Input.GetButtonDown("Fire2")) // Assuming "Fire2" is the right mouse button
-        {
-                    // Right mouse button was just pressed, start the hold timer
-                    rightMouseHoldStartTime = Time.time;
-                    isRightMouseHeld = true;
-                
+                rightMouseHoldStartTime = Time.time;
+            }
+
+         if (Input.GetButtonUp("Fire2"))
+            {
                 if (Time.time - rightMouseHoldStartTime >= 3f)
                 {
-                    // Right mouse button was held for at least 3 seconds
                     ReturnCardAndDrawNew();
-                    isRightMouseHeld = false; // Reset the flag
                 }
                 else
                 {
-                    // Right mouse button was pressed, play the card immediately
                     Card selectedCard = deck.hand[selectedCardIndex];
                     SpawnPrefab(selectedCard);
                 }
-            
-        }
-        else if (Input.GetButtonUp("Fire2"))
-        {
-            // Right mouse button was released, reset the hold timer
-            isRightMouseHeld = false;
-        }
 
-        }
-        
+                isRightMouseHeld = false;
 
+            }
+        }
     }
+
     public void SpawnPrefab(Card card)
     {
+        if (card.isActive)
+        {
+           Debug.Log("This card is inactive and cannot be used.");
+           return; // Exit the method if the card is inactive
+        }
 
         if (DriftPointManager.Instance.SpendPoints(card.pointType, card.cardCost))
         {
-
-
             switch (card.spawnType)
             {
                 case Card.spawnPosition.Stand:

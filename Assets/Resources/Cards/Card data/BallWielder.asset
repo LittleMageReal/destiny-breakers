@@ -19,4 +19,7 @@ MonoBehaviour:
   pointType: 1
   spawnType: 0
   Move: 0
+  Token: 0
+  canBeReturned: 0
+  isActive: 0
   cardEffect: WieldBall

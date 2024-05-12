@@ -18,3 +18,8 @@ MonoBehaviour:
   unitPrefab: {fileID: 8006952817633904325, guid: 1ef2c1f14e3da9849bf5084105919b6b, type: 3}
   pointType: 1
   spawnType: 2
+  Move: 0
+  Token: 0
+  canBeReturned: 0
+  isActive: 1
+  cardEffect: 
