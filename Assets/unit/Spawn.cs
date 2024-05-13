@@ -92,7 +92,7 @@ public class Spawn : MonoBehaviour
             }
 
 
-// Card summoning and returning cards to deck
+         // Card summoning and returning cards to deck
          if (Input.GetButtonDown("Fire2")) 
             {
                 isRightMouseHeld = true;
