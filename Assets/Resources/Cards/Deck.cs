@@ -1,17 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Photon.Pun;
 
 public class Deck : MonoBehaviour
 {
     public List<Card> deck;
     public List<Card> hand = new List<Card>();
-
-    public GameObject cardUIPrefab; // The Card UI Prefab
-    public Transform cardUIParent; // The parent transform for the Card UI Prefabs
-
     public bool FreezeDeck = false;
 
     private new PhotonView photonView;
@@ -22,7 +17,6 @@ public class Deck : MonoBehaviour
 
         if (photonView.IsMine)
         {
-            cardUIParent = GameObject.Find("Content").GetComponent<RectTransform>();
             ShuffleDeck();
             DrawCard(0);
         }
@@ -55,21 +49,7 @@ public class Deck : MonoBehaviour
             {
                 Card drawnCard = deck[0];
                 deck.RemoveAt(0);
-                hand.Add(drawnCard);
-
-                if (photonView.IsMine)
-                {
-                    // Create a new Card UI Prefab for the drawn card
-                    GameObject cardUI = Instantiate(cardUIPrefab, cardUIParent);
-                    Card_Display cardUIScript = cardUI.GetComponent<Card_Display>();
-                    cardUIScript.Art.sprite = drawnCard.cardImage;
-                    cardUIScript.Cost.text = drawnCard.cardCost.ToString();
-                    cardUIScript.SetPanelColor(drawnCard.pointType);
-
-                    // Add the new Card UI object to the cardUIs list
-                    Spawn.instance.cardUIs.Add(cardUI);
-                }
-               
+                hand.Add(drawnCard);    
             }
         }
     }
@@ -89,20 +69,9 @@ public class Deck : MonoBehaviour
                 Card drawnCard = deck[deck.Count - 1]; // Get the last card in the deck
                 deck.RemoveAt(deck.Count - 1); // Remove the last card from the deck
                 hand.Add(drawnCard);
-
-                // Create a new Card UI Prefab for the drawn card
-                GameObject cardUI = Instantiate(cardUIPrefab, cardUIParent);
-                Card_Display cardUIScript = cardUI.GetComponent<Card_Display>();
-                cardUIScript.Art.sprite = drawnCard.cardImage;
-                cardUIScript.Cost.text = drawnCard.cardCost.ToString();
-                cardUIScript.SetPanelColor(drawnCard.pointType);
-
-                // Add the new Card UI object to the cardUIs list
-                Spawn.instance.cardUIs.Add(cardUI);
             }
         }
     }
-
 
 
     void OnTriggerEnter(Collider other)

@@ -7,7 +7,6 @@ public class AddCartToHand : MonoBehaviour
     public Card cardToAddWhenSummoned;
 
     private Deck deck;
-    private GameObject cardUI;
 
     void Start()
     {
@@ -18,16 +17,6 @@ public class AddCartToHand : MonoBehaviour
         if (deck != null && cardToAddWhenSummoned != null)
         {
             deck.hand.Add(cardToAddWhenSummoned);
-
-            // Create a new Card UI Prefab for the drawn card
-            cardUI = Instantiate(deck.cardUIPrefab, deck.cardUIParent);
-            Card_Display cardUIScript = cardUI.GetComponent<Card_Display>();
-            cardUIScript.Art.sprite = cardToAddWhenSummoned.cardImage;
-            cardUIScript.Cost.text = cardToAddWhenSummoned.cardCost.ToString();
-            cardUIScript.SetPanelColor(cardToAddWhenSummoned.pointType);
-
-            // Add the new Card UI object to the cardUIs list
-            Spawn.instance.cardUIs.Add(cardUI);
         }
     }
 
@@ -37,13 +26,6 @@ public class AddCartToHand : MonoBehaviour
         if (deck != null && cardToAddWhenSummoned != null)
         {
             deck.hand.Remove(cardToAddWhenSummoned);
-
-            // Remove the Card UI object from the cardUIs list and destroy it
-            if (cardUI != null)
-            {
-                Spawn.instance.cardUIs.Remove(cardUI);
-                Destroy(cardUI);
-            }
         }
     }
 }

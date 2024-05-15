@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -18,8 +18,9 @@ public class Spawn : MonoBehaviour
     private float rightMouseHoldStartTime =  0f; // Time when the right mouse button was first pressed
     private bool isRightMouseHeld = false; // Whether the right mouse button is currently being held down
 
-    public List<GameObject> cardUIs = new List<GameObject>(); // List of Card UI objects
-    public TMP_Text cardEffect;
+
+    // Define an event to notify when a card is selected
+    public static event Action<int> OnCardSelected;
 
     public static Spawn instance;
 
@@ -40,14 +41,6 @@ public class Spawn : MonoBehaviour
         }
     }
 
-
-    private void Start()
-    {
-        if (photonView.IsMine)
-        {
-            cardEffect = GameObject.Find("Effect").GetComponent<TMP_Text>();
-        }
-    }
 
     public void Update()
     {
@@ -71,25 +64,15 @@ public class Spawn : MonoBehaviour
                     }
 
                     Card selectedCard = deck.hand[selectedCardIndex];
-                    cardEffect.text = selectedCard.cardEffect;
                 }
 
 
                 Debug.Log("number " + selectedCardIndex);
-
-                // Scale the selected Card UI object
-                for (int i = 0; i < cardUIs.Count; i++)
-                {
-                    if (i == selectedCardIndex)
-                    {
-                        cardUIs[i].transform.localScale = new Vector3(1.7f, 1.7f, 0f); // Scale up
-                    }
-                    else
-                    {
-                        cardUIs[i].transform.localScale = new Vector3(1f, 1f, 1f); // Reset scale
-                    }
-                }
+                
             }
+
+        // Trigger the OnCardSelected event with the selected card index
+        OnCardSelected?.Invoke(selectedCardIndex);
 
 
          // Card summoning and returning cards to deck
@@ -147,17 +130,10 @@ public class Spawn : MonoBehaviour
             if (!card.Move)
             {
                 if (card.Token)
-
                    {
                      // If the card is a token card, remove it from the hand without adding it back to the deck
                      deck.hand.Remove(card);
-
-                     // Destroy the UI card object
-                     Destroy(cardUIs[selectedCardIndex]);
-
-                     // Remove the UI card from the list
-                     cardUIs.RemoveAt(selectedCardIndex);
-                    }
+                   }
                 else
                 {
                  // Remove the card from the hand
@@ -165,12 +141,6 @@ public class Spawn : MonoBehaviour
 
                  // Add the card back to the deck
                  deck.deck.Add(card);
-
-                 // Destroy the UI card object
-                 Destroy(cardUIs[selectedCardIndex]);
-
-                 // Remove the UI card from the list
-                 cardUIs.RemoveAt(selectedCardIndex);
 
                 }
                 
@@ -271,12 +241,6 @@ public class Spawn : MonoBehaviour
             deck.deck.Add(selectedCard);
             deck.hand.RemoveAt(selectedCardIndex);
 
-            // Destroy the UI card object for the returned card
-            Destroy(cardUIs[selectedCardIndex]);
-
-            // Remove the UI card from the list for the returned card
-            cardUIs.RemoveAt(selectedCardIndex);
-
             // Update selectedCardIndex to the new card index
             selectedCardIndex = deck.hand.Count -  1;
 
@@ -289,5 +253,4 @@ public class Spawn : MonoBehaviour
         }
       }
     }
-
 }

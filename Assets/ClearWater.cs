@@ -34,19 +34,7 @@ public class ClearWater : MonoBehaviour
 
                 // Clear the hand
                 deck.hand.Clear();
-
-                foreach (Transform child in deck.cardUIParent)
-                {
-                    Destroy(child.gameObject);
-                }
             }
         }
-
-        if (Spawner != null)
-        {
-            Spawner.cardUIs.Clear();
-        }
-        else
-            Debug.Log("fuk");
     }
 }
