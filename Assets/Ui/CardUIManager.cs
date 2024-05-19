@@ -24,6 +24,7 @@ public class CardUIManager : MonoBehaviour
         {
             // Find the "hp" text object and assign it to the Health variable
             cardEffect = GameObject.Find("Effect").GetComponent<TMP_Text>();
+            cardUIParent = GameObject.Find("Content").GetComponent<RectTransform>();
         }
     }
 
@@ -117,7 +118,9 @@ public class CardUIManager : MonoBehaviour
 
     private void ScaleAndPositionSelectedCard()
     {
-        if (lastSelectedIndex >= 0 && lastSelectedIndex < cardUIs.Count)
+        if (photonView.IsMine)
+      {
+           if (lastSelectedIndex >= 0 && lastSelectedIndex < cardUIs.Count)
         {
             GameObject selectedCardUI = cardUIs[lastSelectedIndex];
             // Scale the selected card UI
@@ -134,6 +137,8 @@ public class CardUIManager : MonoBehaviour
 
             // Set the selected card UI as the first sibling of its content layer
             selectedCardUI.transform.SetAsFirstSibling();
-        }
+        } 
+     }
+     
     }
 }
