@@ -13,6 +13,19 @@ public class CardUIManager : MonoBehaviour
     public List<GameObject> cardUIs = new List<GameObject>(); // List to keep track of the UI objects
     private int lastSelectedIndex = -1; // Initialize to -1 to indicate no card is selected
     public TMP_Text cardEffect;
+    private new PhotonView photonView;
+
+
+    private void Start()
+    {
+        photonView = GetComponent<PhotonView>();
+
+        if (photonView.IsMine)
+        {
+            // Find the "hp" text object and assign it to the Health variable
+            cardEffect = GameObject.Find("Effect").GetComponent<TMP_Text>();
+        }
+    }
 
     void Update()
     {
@@ -115,6 +128,9 @@ public class CardUIManager : MonoBehaviour
             {
                 canvas.sortingOrder = 2; // Set to a higher value to bring it forward
             }
+
+            Card selectedCard = deck.hand[lastSelectedIndex];
+            cardEffect.text = selectedCard.cardEffect;
 
             // Set the selected card UI as the first sibling of its content layer
             selectedCardUI.transform.SetAsFirstSibling();
