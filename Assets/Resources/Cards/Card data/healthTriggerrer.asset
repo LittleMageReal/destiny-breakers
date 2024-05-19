@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0c3fa8a28df48547ae9a2f5fd5f18e8, type: 3}
-  m_Name: healthTrigger
+  m_Name: healthTriggerrer
   m_EditorClassIdentifier: 
   cardName: healthTrigger
   cardImage: {fileID: 0}
@@ -21,5 +21,5 @@ MonoBehaviour:
   Move: 0
   Token: 0
   canBeReturned: 0
-  isActive: 0
+  isActive: 1
   cardEffect: gain hp loser

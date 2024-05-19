@@ -12,6 +12,7 @@ public class CardUIManager : MonoBehaviour
     public Transform cardUIParent; // The parent object for the Card UIs
     public List<GameObject> cardUIs = new List<GameObject>(); // List to keep track of the UI objects
     private int lastSelectedIndex = -1; // Initialize to -1 to indicate no card is selected
+    public TMP_Text cardEffect;
 
     void Update()
     {

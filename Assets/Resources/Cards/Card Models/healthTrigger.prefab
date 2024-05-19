@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6652591967670889189}
   - component: {fileID: 1873199282916647992}
+  - component: {fileID: 8047214305373206971}
   - component: {fileID: 8543478713598494119}
   m_Layer: 0
   m_Name: healthTrigger
@@ -47,6 +48,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healAmount: 400
   playerHealth: {fileID: 0}
+--- !u!114 &8047214305373206971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6652591967670889187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eccb544732215e48a62c2742435287a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardToAddWhenSummoned: {fileID: 11400000, guid: cf3d5702870bdad4b93387362c419a0e, type: 2}
 --- !u!114 &8543478713598494119
 MonoBehaviour:
   m_ObjectHideFlags: 0
