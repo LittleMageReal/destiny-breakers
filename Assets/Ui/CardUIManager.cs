@@ -36,6 +36,9 @@ public class CardUIManager : MonoBehaviour
         {
             CreateCardUI(card);
         }
+
+        // After updating the UI, scale and position the currently selected card
+        ScaleAndPositionSelectedCard();
     }
 
     private void CreateCardUI(Card card)
@@ -63,34 +66,46 @@ public class CardUIManager : MonoBehaviour
         Spawn.OnCardSelected -= HandleCardSelected;
     }
 
-private void HandleCardSelected(int selectedIndex)
-{
-    // Check if the selected card index has changed
-    if (selectedIndex!= lastSelectedIndex)
+    private void HandleCardSelected(int selectedIndex)
     {
-        // If a card has been deselected, reset its scale and sorting order, then move it to the end of the sibling hierarchy
+        // Check if the selected card index has changed
+        if (selectedIndex!= lastSelectedIndex)
+        {
+            // If a card has been deselected, scale it back down and adjust its position if necessary
+            if (lastSelectedIndex >= 0 && lastSelectedIndex < cardUIs.Count)
+            {
+                GameObject previouslySelectedCardUI = cardUIs[lastSelectedIndex];
+                // Scale the previously selected card UI back down
+                previouslySelectedCardUI.transform.localScale = Vector3.one; // Reset to original size
+                
+                Canvas canvas = previouslySelectedCardUI.GetComponent<Canvas>();
+                if (canvas!= null)
+                {
+                    canvas.sortingOrder = 1; // Reset sorting order to default or lowest value
+                } 
+                if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+                {
+                   previouslySelectedCardUI.transform.SetAsLastSibling();
+                }
+            }
+               
+
+            // Update the lastSelectedIndex to the current selectedIndex
+            lastSelectedIndex = selectedIndex;
+
+            // If a new card is selected, scale and position it
+            if (selectedIndex >= 0 && selectedIndex < cardUIs.Count)
+            {
+                ScaleAndPositionSelectedCard();
+            }
+        }
+    }
+
+    private void ScaleAndPositionSelectedCard()
+    {
         if (lastSelectedIndex >= 0 && lastSelectedIndex < cardUIs.Count)
         {
-            GameObject previouslySelectedCardUI = cardUIs[lastSelectedIndex];
-            // Reset the scale of the previously selected card UI
-            previouslySelectedCardUI.transform.localScale = Vector3.one; // Reset to original size
-            // Reset the sorting order of the previously selected card UI
-            Canvas canvas = previouslySelectedCardUI.GetComponent<Canvas>();
-            if (canvas!= null)
-            {
-                canvas.sortingOrder = 1; // Reset sorting order to default or lowest value
-            }
-            // Move the previously selected card UI to the end of the sibling hierarchy
-            previouslySelectedCardUI.transform.SetAsLastSibling();
-        }
-
-        // Update the lastSelectedIndex to the current selectedIndex
-        lastSelectedIndex = selectedIndex;
-
-        // If a new card is selected, scale the selected card UI
-        if (selectedIndex >= 0 && selectedIndex < cardUIs.Count)
-        {
-            GameObject selectedCardUI = cardUIs[selectedIndex];
+            GameObject selectedCardUI = cardUIs[lastSelectedIndex];
             // Scale the selected card UI
             selectedCardUI.transform.localScale = new Vector3(1.7f, 1.7f, 1f); // Scale factor
             // Center the selected card UI (implement based on your UI setup)
@@ -101,10 +116,7 @@ private void HandleCardSelected(int selectedIndex)
             }
 
             // Set the selected card UI as the first sibling of its content layer
-            selectedCardUI.transform.SetParent(cardUIParent, false);
             selectedCardUI.transform.SetAsFirstSibling();
         }
     }
-}
-
 }
