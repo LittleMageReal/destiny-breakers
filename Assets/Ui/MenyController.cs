@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class MenyController : MonoBehaviour
 {
@@ -21,5 +23,10 @@ public class MenyController : MonoBehaviour
     public void OnlineUi()
     {
         Online.SetActive(true);
+    }
+
+    public void OnClickConnect()
+    {
+        SceneManager.LoadScene("Solo");
     }
 }
