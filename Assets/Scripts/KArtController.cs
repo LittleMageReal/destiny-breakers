@@ -20,19 +20,19 @@ public class KArtController : MonoBehaviour
     [SerializeField] private GameObject redParticleSystem;
     
 
-    private float _forwardAmount;
+    public float _forwardAmount;
     public float _currentSpeed;
-    private float _turnAmount;
+    public float _turnAmount;
     private bool _isGrounded;
 
-    private bool _isDrifting;
+    public bool _isDrifting;
     private float _driftDirection;
     private float _driftTime;
 
     private float _redDriftCounter = 0f;
-    private bool isSpeedBoostActive = false;
+    public bool isSpeedBoostActive = false;
     
-    private float speedBoostCooldown = 0f; 
+    public float speedBoostCooldown = 0f; 
     private float speedBoostCooldownDuration = 0f; 
 
     private Card.PointType lastPointTypeObtained = Card.PointType.Green;
@@ -47,40 +47,10 @@ public class KArtController : MonoBehaviour
 
     private void Update()
     {
-        if (View.IsMine)
-        {
-            transform.position = sphereRb.transform.position;
-
-            _forwardAmount = Input.GetAxis("Vertical");
-            _turnAmount = Input.GetAxis("Horizontal");
-
-            if (_forwardAmount != 0)
-                Drive();
-            else
-                Stand();
-
-            TurnHandler();
-
-            if (Input.GetButtonDown("Jump") && !_isDrifting && Mathf.Abs(_turnAmount) >= 0.5)
-                StartDrift();
-
-            if (_isDrifting && (Input.GetButtonUp("Jump") || (Input.GetKeyUp(KeyCode.W)) ))
-                EndDrift();
-
-         
-            if (Input.GetKeyDown(KeyCode.LeftShift) && !isSpeedBoostActive)
-            {
-              ActivateSpeedBoost();
-            }
-
-            if (speedBoostCooldown > 0)
-            {
-              speedBoostCooldown -= Time.deltaTime;
-            }
-        }
+       transform.position = sphereRb.transform.position;
     }
 
-    private void ActivateSpeedBoost()
+    public void ActivateSpeedBoost()
 {
     if (!isSpeedBoostActive && speedBoostCooldown <= 0) // Ensure a speed boost is not already active
         {
@@ -163,7 +133,7 @@ public class KArtController : MonoBehaviour
     speedBoostCooldown = speedBoostCooldownDuration; // Reset the cooldown
 }
 
-    private void TurnHandler()
+    public void TurnHandler()
     {
         float newRotation = _turnAmount * turnSpeed * Time.deltaTime;
 
@@ -209,7 +179,7 @@ public class KArtController : MonoBehaviour
         }
     }
 
-    private void Drive()
+    public void Drive()
     {
         if (_currentSpeed <= 90)
             _currentSpeed += (_forwardAmount *= forwardSpeed) / 2;
@@ -218,18 +188,18 @@ public class KArtController : MonoBehaviour
         _currentSpeed = Mathf.Max(_currentSpeed, backSpeed);
     }
 
-    private void Stand()
+    public void Stand()
     {
         _currentSpeed = 0;
     }
 
-    private void StartDrift()
+    public void StartDrift()
     {
         _isDrifting = true;
         _driftDirection = _turnAmount;
     }
 
-    private void EndDrift()
+    public void EndDrift()
     {
         _isDrifting = false;
 
