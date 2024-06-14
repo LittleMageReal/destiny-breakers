@@ -88,9 +88,9 @@ Material:
     - _Float1: -0.43
     - _Float2: 2.33
     - _Float3: 1
-    - _FresnelBias: 0.34
+    - _FresnelBias: -0.82
     - _FresnelPower: 23.2
-    - _FresnelScale: 236.79
+    - _FresnelScale: 473.18
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -110,7 +110,7 @@ Material:
     - _TransparentEndPoint: 0.96
     - _TransparentStartPoint: 1
     - _UVSec: 0
-    - _WristOpacity: 0.58
+    - _WristOpacity: 0.74
     - _XRayBias: 0
     - _XRayBias1: 0
     - _XRayIntensity: 1.5
@@ -126,7 +126,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color0: {r: 0, g: 0.5877156, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FresnelColor: {r: 0.37803614, g: 0.85882354, b: 0.101960756, a: 1}
+    - _FresnelColor: {r: 0.4662914, g: 0.101960756, b: 0.85882354, a: 1}
     - _MainColor: {r: 0.39383334, g: 0.7169812, b: 0.34158066, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
     - _XRayColor: {r: 1, g: 0, b: 0, a: 0}

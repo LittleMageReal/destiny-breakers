@@ -27,6 +27,6 @@ public class MenyController : MonoBehaviour
 
     public void OnClickConnect()
     {
-        SceneManager.LoadScene("Solo");
+        SceneManager.LoadScene("StoryChose");
     }
 }

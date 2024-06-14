@@ -10,9 +10,9 @@ public class AiSkellet : MonoBehaviour
     public float attackRange = 5f;
     private int currentWaypoint = 0;
     private NavMeshAgent agent;
-    private Transform player;
+    public Transform player;
 
-    List<Transform> waypoints;
+    public List<Transform> waypoints;
 
     void Start()
     {

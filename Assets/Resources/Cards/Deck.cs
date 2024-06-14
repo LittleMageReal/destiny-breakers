@@ -84,4 +84,9 @@ public class Deck : MonoBehaviour
         }
     }
 
+    public void AddCardToHand(Card card)
+    {
+       hand.Add(card);
+    }
+
 }
