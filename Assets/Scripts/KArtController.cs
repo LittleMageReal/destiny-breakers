@@ -20,9 +20,9 @@ public class KArtController : MonoBehaviour
     [SerializeField] private GameObject redParticleSystem;
     
 
-    private float _forwardAmount;
+    public float _forwardAmount;
     public float _currentSpeed;
-    private float _turnAmount;
+    public float _turnAmount;
     private bool _isGrounded;
 
     private bool _isDrifting;
@@ -31,7 +31,7 @@ public class KArtController : MonoBehaviour
 
     private float _redDriftCounter = 0f;
     private bool isSpeedBoostActive = false;
-    
+    public bool isAiControlled = false;
     private float speedBoostCooldown = 0f; 
     private float speedBoostCooldownDuration = 0f; 
 
@@ -47,6 +47,9 @@ public class KArtController : MonoBehaviour
 
     private void Update()
     {
+        transform.position = sphereRb.transform.position;
+        if (!isAiControlled)
+        {
         if (View.IsMine)
         {
             transform.position = sphereRb.transform.position;
@@ -77,6 +80,7 @@ public class KArtController : MonoBehaviour
             {
               speedBoostCooldown -= Time.deltaTime;
             }
+        }
         }
     }
 
@@ -163,7 +167,7 @@ public class KArtController : MonoBehaviour
     speedBoostCooldown = speedBoostCooldownDuration; // Reset the cooldown
 }
 
-    private void TurnHandler()
+    public void TurnHandler()
     {
         float newRotation = _turnAmount * turnSpeed * Time.deltaTime;
 
@@ -209,7 +213,7 @@ public class KArtController : MonoBehaviour
         }
     }
 
-    private void Drive()
+    public void Drive()
     {
         if (_currentSpeed <= 90)
             _currentSpeed += (_forwardAmount *= forwardSpeed) / 2;
