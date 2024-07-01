@@ -47,7 +47,10 @@ public class KArtController : MonoBehaviour
 
     private void Update()
     {
-       transform.position = sphereRb.transform.position;
+        if (View.IsMine)
+        {
+          transform.position = sphereRb.transform.position;
+        }
     }
 
     public void ActivateSpeedBoost()

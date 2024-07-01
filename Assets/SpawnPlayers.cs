@@ -53,8 +53,9 @@ public class SpawnPlayers : MonoBehaviourPunCallbacks
         int randomNumber;
         do
         {
-            randomNumber = Random.Range(0, spawnPoints.Length);
-        } while (usedSpawnPoints.Contains(randomNumber));
+          randomNumber = Random.Range(0, spawnPoints.Length);
+        } 
+        while (usedSpawnPoints.Contains(randomNumber));
 
         usedSpawnPoints.Add(randomNumber);
         return spawnPoints[randomNumber].transform;
