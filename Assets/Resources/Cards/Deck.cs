@@ -22,8 +22,6 @@ public class Deck : MonoBehaviour
         }
     }
 
-    
-
     void ShuffleDeck()
     {
         for (int i = 0; i < deck.Count; i++)

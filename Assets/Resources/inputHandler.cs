@@ -36,7 +36,13 @@ public class inputHandler : MonoBehaviourPunCallbacks
 
             if (Input.GetKeyDown(KeyCode.LeftShift) &&!kartController.isSpeedBoostActive)
             {
+                kartController.shiftpresed = true;
                 kartController.ActivateSpeedBoost();
+            }
+
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                kartController.shiftpresed = false;
             }
 
             if (kartController.speedBoostCooldown > 0)

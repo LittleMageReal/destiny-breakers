@@ -22,6 +22,7 @@ public class KArtController : MonoBehaviour
 
     public float _forwardAmount;
     public float _currentSpeed;
+    public float _maxSpeed = 90;
     public float _turnAmount;
     private bool _isGrounded;
 
@@ -29,6 +30,7 @@ public class KArtController : MonoBehaviour
     private float _driftDirection;
     private float _driftTime;
 
+    public bool shiftpresed;
     private float _redDriftCounter = 0f;
     public bool isSpeedBoostActive = false;
     
@@ -93,7 +95,7 @@ public class KArtController : MonoBehaviour
         View.RPC("ActivateParticleSystemRPC", RpcTarget.All, particleSystemToActivate.name);
     }
 
-    while (Input.GetKey(KeyCode.LeftShift))
+    while (shiftpresed)
     {
         // Check if there are enough points to spend
         if (DriftPointManager.Instance.SpendPoints(pointTypeToSpend, 1))
@@ -184,7 +186,7 @@ public class KArtController : MonoBehaviour
 
     public void Drive()
     {
-        if (_currentSpeed <= 90)
+        if (_currentSpeed <= _maxSpeed)
             _currentSpeed += (_forwardAmount *= forwardSpeed) / 2;
         else
             _currentSpeed -= Time.deltaTime;

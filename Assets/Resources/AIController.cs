@@ -39,6 +39,23 @@ else {
 turnAmount = -1f;
 }
 
+float driftangle = Mathf.Abs(AngleToTarget);
+if (driftangle > 40)
+{
+   kartController.StartDrift();
+}
+else {
+   kartController.EndDrift();
+}
+
+if (driftangle < 5){
+   kartController.shiftpresed = true;
+   kartController.ActivateSpeedBoost();
+}
+else {
+   kartController.shiftpresed = false;
+}
+
 kartController._forwardAmount = forwardAmount;
 kartController._turnAmount = turnAmount;
 kartController.Drive();
