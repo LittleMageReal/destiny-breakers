@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class AIController : MonoBehaviour
 {
-[SerializeField] private Transform targetPositionTransform;
+[SerializeField] private List<Transform> targetPositionsList; // List of target positions
+private int currentTargetIndex = 0; // Current target index
+public float arrivalThreshold = 1f; // Distance threshold for considering arrival
 public KArtController kartController; // Reference to the KArtController script
 public Vector3 targetPosition; // Target player's transform
 
 void Update()
 {
-SetTargetPosition(targetPositionTransform.position);
+SetTargetPosition(targetPositionsList[currentTargetIndex].position);
 
 float forwardAmount = 0f;
 float turnAmount = 0f;
@@ -63,7 +65,20 @@ kartController.TurnHandler();
 
 }
 public void SetTargetPosition(Vector3 targetPosition)
-{
-this.targetPosition = targetPosition;
+    {
+        this.targetPosition = targetPosition;
+        ChangeTarget();
+        if (currentTargetIndex >= targetPositionsList.Count) // Loop back to the first target
+        {
+            currentTargetIndex = 0;
+        }
+    }
+
+public void ChangeTarget(){
+   float distanceToCurrentTarget = Vector3.Distance(transform.position, targetPosition);
+    if (distanceToCurrentTarget <= arrivalThreshold)
+    {
+     currentTargetIndex++; // Move to the next target
+    }
 }
 }

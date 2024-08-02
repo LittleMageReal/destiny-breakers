@@ -18,7 +18,8 @@ public class KArtController : MonoBehaviour
     [SerializeField] private GameObject greenParticleSystem;
     [SerializeField] private GameObject blueParticleSystem;
     [SerializeField] private GameObject redParticleSystem;
-    
+
+    public DriftPointManager SpecificDriftPointManager;
 
     public float _forwardAmount;
     public float _currentSpeed;
@@ -98,7 +99,7 @@ public class KArtController : MonoBehaviour
     while (shiftpresed)
     {
         // Check if there are enough points to spend
-        if (DriftPointManager.Instance.SpendPoints(pointTypeToSpend, 1))
+        if (SpecificDriftPointManager.SpendPoints(pointTypeToSpend, 1))
         {
             // Apply a temporary speed boost
             float originalSpeed = _currentSpeed;
@@ -170,7 +171,7 @@ public class KArtController : MonoBehaviour
             _redDriftCounter += Time.deltaTime;
             if (_redDriftCounter >= 1f)
             {
-                DriftPointManager.Instance.AddPoints(Card.PointType.Red);
+                SpecificDriftPointManager.AddPoints(Card.PointType.Red);
                 _redDriftCounter = 0f;
             }
         }
@@ -210,18 +211,18 @@ public class KArtController : MonoBehaviour
 
         if (!isSpeedBoostActive && _driftTime > 2.7f)
         {
-            DriftPointManager.Instance.AddPoints(Card.PointType.Red);
+            SpecificDriftPointManager.AddPoints(Card.PointType.Red);
             lastPointTypeObtained = Card.PointType.Red;
         }
         else if (!isSpeedBoostActive && _driftTime > 1.7f)
         {
-            DriftPointManager.Instance.AddPoints(Card.PointType.Blue);
-            DriftPointManager.Instance.AddPoints(Card.PointType.Blue);
+            SpecificDriftPointManager.AddPoints(Card.PointType.Blue);
+            SpecificDriftPointManager.AddPoints(Card.PointType.Blue);
             lastPointTypeObtained = Card.PointType.Blue;
         }
         else if (!isSpeedBoostActive && _driftTime > 0.3f)
         {
-            DriftPointManager.Instance.AddPoints(Card.PointType.Green);
+            SpecificDriftPointManager.AddPoints(Card.PointType.Green);
             lastPointTypeObtained = Card.PointType.Green;
         }
 

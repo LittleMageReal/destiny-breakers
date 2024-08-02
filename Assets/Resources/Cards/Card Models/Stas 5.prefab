@@ -379,6 +379,7 @@ MonoBehaviour:
   CrushAmount: 0
   Petrify: 0
   PetrifyAmount: 0
+  Indesructable: 0
 --- !u!114 &8275039926327729072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,6 +395,7 @@ MonoBehaviour:
   firePoint: {fileID: 8410196833901578894}
   bulletPrefab: {fileID: 5328139310917450661, guid: 9273601e44720854ebebc2b8366982d7, type: 3}
   willScript: {fileID: 6981708309246494858}
+  ammo: 3
   bulletForce: 100
   Cooldown: 2
 --- !u!114 &1080103442699702020

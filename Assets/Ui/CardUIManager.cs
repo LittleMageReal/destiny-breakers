@@ -63,6 +63,7 @@ public class CardUIManager : MonoBehaviour
         Card_Display cardUIScript = cardUI.GetComponent<Card_Display>();
         cardUIScript.Art.sprite = card.cardImage;
         cardUIScript.Cost.text = card.cardCost.ToString();
+        cardUIScript.ActiveChain(card);
         cardUIScript.SetPanelColor(card.pointType);
 
         // Add the new Card UI object to the list

@@ -10,6 +10,13 @@ public class Card_Display : MonoBehaviour
     public Image Art;
 
     public Image Panel;
+    public GameObject Chain;
+
+    public void ActiveChain(Card card)
+    {
+      Chain.SetActive(card.isActive); 
+    }
+
     public void SetPanelColor(Card.PointType pointType)
     {
         switch (pointType)

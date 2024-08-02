@@ -11,6 +11,7 @@ public class AiShooter : MonoBehaviour
     public float range = 10f; // The maximum range at which the turret can fire.
     public float fireInterval = 0.5f; // The interval at which the turret fires, in seconds.
     public float speed = 1.0f; // The speed of rotation.
+    public float firespeed = 20;
 
     private float lastFireTime; // The time at which the turret last fired.
     private new PhotonView photonView;
@@ -43,6 +44,6 @@ public class AiShooter : MonoBehaviour
     {
         // Instantiate the projectile at the turret's position and in the direction of the player.
         GameObject newProjectile = Instantiate(projectile, firepoint.position, Quaternion.identity);
-        newProjectile.GetComponent<Rigidbody>().AddForce(player.position - transform.position, ForceMode.Impulse);
+        newProjectile.GetComponent<Rigidbody>().AddForce((player.position - transform.position) * firespeed, ForceMode.Impulse);
     }
 }

@@ -547,6 +547,7 @@ MonoBehaviour:
   CrushAmount: 0
   Petrify: 0
   PetrifyAmount: 0
+  Indesructable: 0
 --- !u!114 &8275039926327729072
 MonoBehaviour:
   m_ObjectHideFlags: 0

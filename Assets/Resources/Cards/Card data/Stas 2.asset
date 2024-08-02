@@ -21,4 +21,5 @@ MonoBehaviour:
   Move: 0
   Token: 0
   canBeReturned: 0
+  isActive: 0
   cardEffect: Shoot

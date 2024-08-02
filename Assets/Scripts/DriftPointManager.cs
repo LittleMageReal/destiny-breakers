@@ -18,20 +18,27 @@ public class DriftPointManager : MonoBehaviour
     {
         if (Instance == null)
         {
-            Instance = this;
+           // Instance = this;
         }
         else
         {
             Debug.LogWarning("More than one instance of DriftPointManager found!");
-            Destroy(this.gameObject);
+          //  Destroy(this.gameObject);
         }
     }
 
     public void UpdatePointsUI()
     {
+        if (greenPointsText != null && bluePointsText != null && redPointsText!= null)
+        {
         greenPointsText.text = GreenPoints.ToString();
         bluePointsText.text = BluePoints.ToString();
         redPointsText.text = RedPoints.ToString();
+        }
+        else{
+            Debug.Log("fg");
+        }
+            
     }
 
     public void AddPoints(Card.PointType pointType)

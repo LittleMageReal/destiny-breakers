@@ -14,7 +14,7 @@ public class Card : ScriptableObject
     public bool Move;
     public bool Token;
     public bool canBeReturned = false;
-    public bool isActive = false; 
+    public bool isActive; 
     public string cardEffect;
 }
 

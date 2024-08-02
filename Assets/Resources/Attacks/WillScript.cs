@@ -21,6 +21,8 @@ public class WillScript : MonoBehaviourPunCallbacks
     private PhotonView photonView;
     private bool shouldDestroy = false;
 
+    public bool Indesructable = false;
+
     void Start()
     {
         playerHealth = GetComponentInParent<Health>();
@@ -52,7 +54,12 @@ public class WillScript : MonoBehaviourPunCallbacks
                 
             }
 
-            if ((gameObject != null) && !Petrify)
+            if (Indesructable)
+            {
+                Will = 0;
+            }
+
+            if ((gameObject != null) && !Petrify && !Indesructable)
             {
                 shouldDestroy = true;
             }

@@ -9,13 +9,14 @@ public class Spawn : MonoBehaviour
     public Transform parentObject;
     public Transform artifact;
     public Transform effect;
-    private int selectedCardIndex = 0; 
+    public int selectedCardIndex = 0; 
 
     private float scrollCooldown = 0.2f; // Time in seconds to wait after each scroll
     private float lastScrollTime; // Time when the last scroll occurred
 
-    private float rightMouseHoldStartTime =  0f; // Time when the right mouse button was first pressed
-    private bool isRightMouseHeld = false; // Whether the right mouse button is currently being held down
+    public float scroll;
+
+    public DriftPointManager SpecificDriftPointManager;
 
 
     // Define an event to notify when a card is selected
@@ -43,11 +44,12 @@ public class Spawn : MonoBehaviour
 
     public void Update()
     {
-        if (photonView.IsMine)
-        {
-            float scroll = Input.GetAxis("Mouse ScrollWheel");
+        
+    }
 
-            if (scroll != 0 && Time.time - lastScrollTime >= scrollCooldown)
+    public void Scrolling(float scroll)
+    {
+        if (scroll != 0 && Time.time - lastScrollTime >= scrollCooldown)
             {
                 lastScrollTime = Time.time;
 
@@ -70,34 +72,8 @@ public class Spawn : MonoBehaviour
                 
             }
 
-        // Trigger the OnCardSelected event with the selected card index
-        OnCardSelected?.Invoke(selectedCardIndex);
-
-
-         // Card summoning and returning cards to deck
-         if (Input.GetButtonDown("Fire2")) 
-            {
-                isRightMouseHeld = true;
-
-                rightMouseHoldStartTime = Time.time;
-            }
-
-         if (Input.GetButtonUp("Fire2"))
-            {
-                if (Time.time - rightMouseHoldStartTime >= 3f)
-                {
-                    ReturnCardAndDrawNew();
-                }
-                else
-                {
-                    Card selectedCard = deck.hand[selectedCardIndex];
-                    SpawnPrefab(selectedCard);
-                }
-
-                isRightMouseHeld = false;
-
-            }
-        }
+            // Trigger the OnCardSelected event with the selected card index
+            OnCardSelected?.Invoke(selectedCardIndex);
     }
 
     public void SpawnPrefab(Card card)
@@ -108,7 +84,7 @@ public class Spawn : MonoBehaviour
            return; // Exit the method if the card is inactive
         }
 
-        if (DriftPointManager.Instance.SpendPoints(card.pointType, card.cardCost))
+        if (SpecificDriftPointManager.SpendPoints(card.pointType, card.cardCost))
         {
             switch (card.spawnType)
             {
@@ -228,7 +204,7 @@ public class Spawn : MonoBehaviour
 
     }
 
-    private void ReturnCardAndDrawNew()
+    public void ReturnCardAndDrawNew()
     {
       if (deck.hand.Count >  0)
      {

@@ -9,6 +9,8 @@ public class Shooting : MonoBehaviour
     public GameObject bulletPrefab;
     public WillScript willScript;
 
+    public int ammo;
+
     public float bulletForce = 20f;
     [SerializeField] private float Cooldown = 2f;
     private float lastUse;
@@ -25,9 +27,10 @@ public class Shooting : MonoBehaviour
     {
         if (photonView.IsMine)
         {
-            if (Input.GetButtonDown("Fire1") && Time.time - lastUse >= Cooldown)
+            if (Input.GetButtonDown("Fire1") && Time.time - lastUse >= Cooldown && ammo > 0)
             {
                 lastUse = Time.time;
+                ammo -= 1;
                 Shoot();
             }
         }
